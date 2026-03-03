@@ -154,8 +154,13 @@ fig_fc.add_trace(go.Scatter(x=future_dates + future_dates[::-1],
 fig_fc.add_trace(go.Scatter(x=future_dates, y=forecast_vals,
                             mode="lines", name="Forecast",
                             line=dict(color="#fb923c", width=2.5, dash="dot")))
-fig_fc.add_vline(x=str(df_daily["date"].iloc[-1]), line_dash="dash",
-                 line_color="white", annotation_text="Forecast Start")
+cutoff = df_daily["date"].iloc[-1].strftime("%Y-%m-%d")
+fig_fc.add_shape(type="line", x0=cutoff, x1=cutoff, y0=0, y1=1,
+                 xref="x", yref="paper",
+                 line=dict(color="white", dash="dash", width=1.5))
+fig_fc.add_annotation(x=cutoff, y=1, xref="x", yref="paper",
+                      text="Forecast Start", showarrow=False,
+                      font=dict(color="white"), xshift=5, yshift=-10, xanchor="left")
 fig_fc.update_layout(template="plotly_dark", paper_bgcolor="rgba(0,0,0,0)",
                      plot_bgcolor="rgba(0,0,0,0)", legend=dict(x=0, y=1),
                      margin=dict(t=20, b=20))
